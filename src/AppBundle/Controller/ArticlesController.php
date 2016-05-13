@@ -3,10 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
-use AppBundle\Entity\Comment;
 use AppBundle\Form\ArticleScoreType;
 use AppBundle\Form\ArticleType;
-use AppBundle\Form\CommentType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +23,12 @@ class ArticlesController extends FOSRestController
         return $article;
     }
 
+    /**
+     * @param Article $article
+     * @param Request $request
+     *
+     * @return mixed
+     */
     private function treatAndValidateRequest(Article $article, Request $request)
     {
         $form = $this->createForm(
@@ -41,11 +45,24 @@ class ArticlesController extends FOSRestController
         return $errors;
     }
 
+    /**
+     * @param Article $article
+     */
     private function persistAndFlush(Article $article)
     {
         $manager = $this->getDoctrine()->getManager();
         $manager->persist($article);
         $manager->flush();
+    }
+
+    /**
+     * @param $errors
+     *
+     * @return bool
+     */
+    private function hasErrors($errors)
+    {
+        return (count($errors) > 0);
     }
 
     /**
@@ -71,12 +88,8 @@ class ArticlesController extends FOSRestController
         $article = new Article();
         $errors = $this->treatAndValidateRequest($article, $request);
 
-        if (count($errors) > 0) {
-            return new View(
-                $errors,
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        if ($this->hasErrors($errors))
+            return new View($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $this->persistAndFlush($article);
 
@@ -94,12 +107,8 @@ class ArticlesController extends FOSRestController
     {
         $errors = $this->treatAndValidateRequest($article, $request);
 
-        if (count($errors) > 0) {
-            return new View(
-                $errors,
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        if ($this->hasErrors($errors))
+            return new View($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $this->persistAndFlush($article);
 
@@ -141,12 +150,8 @@ class ArticlesController extends FOSRestController
 
         $errors = $this->get('validator')->validate($article);
 
-        if (count($errors) > 0) {
-            return new View(
-                $errors,
-                Response::HTTP_UNPROCESSABLE_ENTITY
-            );
-        }
+        if ($this->hasErrors($errors))
+            return new View($errors, Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $this->persistAndFlush($article);
 
