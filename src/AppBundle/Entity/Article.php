@@ -56,7 +56,7 @@ class Article
      * @ORM\Column(type="integer", nullable=true)
      *
      * @Assert\Range(
-     *     min = 1,
+     *     min = 0,
      *     max = 5
      * )
      */
