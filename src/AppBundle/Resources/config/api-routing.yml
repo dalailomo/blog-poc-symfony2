@@ -2,3 +2,8 @@ blog_api_articles:
     type: rest
     resource: "@AppBundle/Controller/ArticlesController.php"
     name_prefix:  api_articles_
+
+blog_api_comments:
+    type: rest
+    resource: "@AppBundle/Controller/CommentsController.php"
+    name_prefix:  api_comments_

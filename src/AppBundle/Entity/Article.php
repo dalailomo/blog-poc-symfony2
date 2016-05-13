@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -17,7 +18,7 @@ class Article
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
@@ -27,7 +28,7 @@ class Article
      * @Assert\NotBlank()
      * @Assert\NotNull()
      */
-    protected $title;
+    private $title;
 
     /**
      * @var string
@@ -37,7 +38,17 @@ class Article
      * @Assert\NotBlank()
      * @Assert\NotNull()
      */
-    protected $body;
+    private $body;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotBlank()
+     * @Assert\NotNull()
+     */
+    private $author;
 
     /**
      * @var int
@@ -49,15 +60,24 @@ class Article
      *     max = 5
      * )
      */
-    protected $score;
+    private $score;
 
     /**
-     * We'll see later why $title and $body are put by default to ''
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="article", cascade={"persist"})
+     */
+    private $comments;
+
+    /**
+     * Article constructor.
+     *
+     * @param string $title
+     * @param string $body
      */
     public function __construct($title = '', $body = '')
     {
         $this->title = $title;
         $this->body = $body;
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -136,6 +156,46 @@ class Article
     public function setScore($score)
     {
         $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param string $author
+     *
+     * @return self
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param mixed $comments
+     *
+     * @return self
+     */
+    public function setComments($comments)
+    {
+        $this->comments->add($comments);
 
         return $this;
     }

@@ -3,8 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Comment;
 use AppBundle\Form\ArticleScoreType;
 use AppBundle\Form\ArticleType;
+use AppBundle\Form\CommentType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Request;
@@ -150,4 +152,5 @@ class ArticlesController extends FOSRestController
 
         return new View($article, Response::HTTP_OK);
     }
+
 }
