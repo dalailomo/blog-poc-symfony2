@@ -40,6 +40,18 @@ class Article
     protected $body;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     *
+     * @Assert\Range(
+     *     min = 1,
+     *     max = 5
+     * )
+     */
+    protected $score;
+
+    /**
      * We'll see later why $title and $body are put by default to ''
      */
     public function __construct($title = '', $body = '')
@@ -104,6 +116,26 @@ class Article
     public function setBody($body)
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
+
+    /**
+     * @param int $score
+     *
+     * @return self
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
 
         return $this;
     }

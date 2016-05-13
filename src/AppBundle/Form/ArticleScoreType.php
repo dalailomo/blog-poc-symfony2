@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ArticleType extends AbstractType
+class ArticleScoreType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -14,10 +14,7 @@ class ArticleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('title')
-            ->add('body')
-            ->add('score');
+        $builder->add('score');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

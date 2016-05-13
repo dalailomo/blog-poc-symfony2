@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
+use AppBundle\Form\ArticleScoreType;
 use AppBundle\Form\ArticleType;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
@@ -24,7 +25,6 @@ class ArticlesController extends FOSRestController
 
     private function treatAndValidateRequest(Article $article, Request $request)
     {
-        // createForm is provided by the parent class
         $form = $this->createForm(
             new ArticleType(),
             $article,
@@ -115,6 +115,38 @@ class ArticlesController extends FOSRestController
         $manager = $this->getDoctrine()->getManager();
         $manager->remove($article);
         $manager->flush();
+
+        return new View($article, Response::HTTP_OK);
+    }
+
+    /**
+     * @param Article $article
+     * @param Request $request
+     *
+     * @return View
+     */
+    public function putArticleRateAction(Article $article, Request $request)
+    {
+        $form = $this->createForm(
+            new ArticleScoreType(),
+            $article,
+            array(
+                'method' => $request->getMethod()
+            )
+        );
+
+        $form->handleRequest($request);
+
+        $errors = $this->get('validator')->validate($article);
+
+        if (count($errors) > 0) {
+            return new View(
+                $errors,
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+        }
+
+        $this->persistAndFlush($article);
 
         return new View($article, Response::HTTP_OK);
     }
