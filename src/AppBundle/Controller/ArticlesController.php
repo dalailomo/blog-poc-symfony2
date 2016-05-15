@@ -32,7 +32,7 @@ class ArticlesController extends FOSRestController
     private function treatAndValidateRequest(Article $article, Request $request)
     {
         $form = $this->createForm(
-            new ArticleType(),
+            ArticleType::class,
             $article,
             array(
                 'method' => $request->getMethod()
@@ -139,7 +139,7 @@ class ArticlesController extends FOSRestController
     public function putArticleRateAction(Article $article, Request $request)
     {
         $form = $this->createForm(
-            new ArticleScoreType(),
+            ArticleScoreType::class,
             $article,
             array(
                 'method' => $request->getMethod()

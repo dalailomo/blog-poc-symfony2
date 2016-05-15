@@ -36,7 +36,7 @@ class CommentsController extends FOSRestController
         $comment->setArticle($article);
 
         $form = $this->createForm(
-            new CommentType(),
+            CommentType::class,
             $comment,
             array(
                 'method' => $request->getMethod()
