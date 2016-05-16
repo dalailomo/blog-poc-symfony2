@@ -95,6 +95,12 @@ We can use this configuration in our `phpunit.xml` configuration file:
 
 ## Usage example
 
+We need the server running.
+
+```
+$ php app/console server:run
+```
+
 I used `httpie` to test my calls. We will use that for the following examples.
 
 ### Getting a list of articles
